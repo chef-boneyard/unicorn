@@ -33,6 +33,7 @@ an application running under unicorn.
 * `preload_app` - Default is false.
 * `worker_processes` - Number of worker processes to spawn. Default is
   4.
+* `before_exec` - Default is nil.
 * `before_fork` - Default is nil.
 * `after_fork` - Default is nil.
 * `pid` - Pidfile location. Default is nil.
