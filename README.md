@@ -26,6 +26,8 @@ an application running under unicorn.
 * `preload_app` - Default is false.
 * `worker_processes` - Number of worker processes to spawn. Default is
   4.
+* `unicorn_command_line` - If set, specifies the unicorn commandline to set
+  in the config file.  Usefull when sandboxing your unicorn installation.
 * `before_exec` - Default is nil.
 * `before_fork` - Default is nil.
 * `after_fork` - Default is nil.
