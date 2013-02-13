@@ -25,6 +25,11 @@ worker_processes <%= @worker_processes %>
 Unicorn::HttpServer::START_CTX[0] = "<%= @unicorn_command_line %>"
 <%- end %>
 
+<%- if @user %>
+# Run forked children as specified user/group
+user <%= @user.join(", ") %>
+<%- end %>
+
 <%- if @before_exec %>
 # What to do right before exec()-ing the new unicorn binary
 before_exec do |server|
