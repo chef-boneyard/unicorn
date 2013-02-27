@@ -18,7 +18,27 @@
 # limitations under the License.
 #
 
-define :unicorn_config, :listen => nil, :working_directory => nil, :worker_timeout => 60, :preload_app => false, :worker_processes => 4, :unicorn_command_line => nil, :user => nil, :before_exec => nil, :before_fork => nil, :after_fork => nil, :pid => nil, :stderr_path => nil, :stdout_path => nil, :notifies => nil, :owner => nil, :group => nil, :mode => nil, :copy_on_write => false, :enable_stats => false do
+define :unicorn_config, 
+    :listen               => nil, 
+    :working_directory    => nil,
+    :worker_timeout       => 60, 
+    :preload_app          => false, 
+    :worker_processes     => 4,
+    :unicorn_command_line => nil, 
+    :user                 => nil, 
+    :pid                  => nil,
+    :before_exec          => nil,
+    :before_fork          => nil, 
+    :after_fork           => nil, 
+    :stderr_path          => nil,
+    :stdout_path          => nil, 
+    :notifies             => nil, 
+    :owner                => nil, 
+    :group                => nil,
+    :mode                 => nil, 
+    :copy_on_write        => false, 
+    :enable_stats         => false do
+
   config_dir = File.dirname(params[:name])
 
   directory config_dir do
