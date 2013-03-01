@@ -28,7 +28,9 @@ an application running under unicorn.
   4.
 * `unicorn_command_line` - If set, specifies the unicorn commandline to set
   in the config file.  Usefull when sandboxing your unicorn installation.
-* `user` - User and optional group to run children as. Default is nil.
+* `forked_user` - User to run children as. Default is nil.
+* `forked_group` - Group to run children as. You *must* specify a `forked_user`
+  as well to use this attribute. Default is nil.
 * `before_exec` - Default is nil.
 * `before_fork` - Default is nil.
 * `after_fork` - Default is nil.

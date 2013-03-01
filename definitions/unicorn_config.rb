@@ -25,7 +25,8 @@ define :unicorn_config,
     :preload_app          => false, 
     :worker_processes     => 4,
     :unicorn_command_line => nil, 
-    :user                 => nil, 
+    :forked_user          => nil, 
+    :forked_group         => nil, 
     :pid                  => nil,
     :before_exec          => nil,
     :before_fork          => nil, 
@@ -54,12 +55,7 @@ define :unicorn_config,
     end
     tvars[:listen][port] = oarray.join(", ")
   end
-
-  unless params[:user].nil?
-    params[:user] = [params[:user]] if params[:user].is_a? String
-    params[:user].map! {|x| '"' + x + '"'} 
-  end
-
+  
   template params[:name] do
     source "unicorn.rb.erb"
     cookbook "unicorn"
@@ -70,5 +66,16 @@ define :unicorn_config,
     variables params
     notifies *params[:notifies] if params[:notifies]
   end
-
+  
+  # If the user set a group for forked processes but not a user, warn them that
+  # we did not set the group. Unicorn does not allow you to drop privileges at
+  # the group level only.
+  ruby_block "warn-group-no-user" do
+    only_if { params[:forked_user].nil? and !params[:forked_group].nil? }
+    block do
+      Chef::Log.warn "Unable to set the Unicorn 'forked_group' because a "\
+        "forked_user' was not specified! Unicorn will be run as root! Please "\
+        "see the Unicorn documentation regarding `user` for proper usage."
+    end
+  end
 end
