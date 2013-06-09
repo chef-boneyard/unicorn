@@ -1,3 +1,9 @@
+## v1.3.0:
+
+### Improvement
+
+- [COOK-2470]: Add "user" directive support to Unicorn cookbook
+
 ## v1.2.2:
 
 * [COOK-2442] - Template uses an ActiveSupport method
