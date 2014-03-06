@@ -18,4 +18,7 @@
 # limitations under the License.
 #
 
-gem_package "unicorn"
+gem_package "unicorn" do
+  action :nstall
+  version ">=0"
+end
