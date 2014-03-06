@@ -19,6 +19,6 @@
 #
 
 gem_package "unicorn" do
-  action :nstall
+  action :install
   version ">=0"
 end
