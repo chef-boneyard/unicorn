@@ -52,7 +52,7 @@ define :unicorn_config,
 
   case params[:init_style]
   when 'upstart'
-    template "/etc/init/#{basename}.conf" do
+    template "/etc/init/unicorn-#{basename}.conf" do
       source "unicorn-upstart.conf.erb"
       cookbook "unicorn"
       mode "0644"
@@ -61,7 +61,7 @@ define :unicorn_config,
       mode params[:mode]   if params[:mode]
       variables params
     end
-    service 'unicorn' do
+    service "unicorn-#{basename}" do
       provider Chef::Provider::Service::Upstart
       supports :status => true, :restart => true, :reload => true
       action   :nothing
