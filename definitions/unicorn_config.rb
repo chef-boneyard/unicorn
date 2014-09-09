@@ -50,7 +50,7 @@ define :unicorn_config,
     action :create
   end
 
-  case params['init_style']
+  case params[:init_style]
   when 'upstart'
     template "/etc/init/#{basename}.conf" do
       source "ubuntu/unicorn.conf.erb"
@@ -65,6 +65,14 @@ define :unicorn_config,
       provider Chef::Provider::Service::Upstart
       supports :status => true, :restart => true, :reload => true
       action   :nothing
+    end
+  else
+    ruby_block "warn-no-init-style" do
+      block do
+        Chef::Log.warn "Unable to set up the Unicorn init script because a "\
+          "init_style' was not specified! Unicorn will be not be started "\
+          "without an 'init_style'."
+      end
     end
   end
 
