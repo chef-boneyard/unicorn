@@ -43,7 +43,8 @@ define :unicorn_config,
     :rack_env             => 'production' do
 
   config_dir = File.dirname(params[:name])
-  basename = File.basename(params[:name])
+  basename = File.basename(params[:name], ".*")
+  service_name = basename == "unicorn" ? "unicorn" : "unicorn-#{basename}"
 
   paths = [:stderr_path, :stdout_path].map {|k| File.dirname(params[k])}
   paths += [config_dir]
@@ -56,8 +57,8 @@ define :unicorn_config,
 
   case params[:init_style]
   when 'upstart'
-    template "/etc/init/#{basename}.conf" do
-      source "ubuntu/unicorn.conf.erb"
+    template "/etc/init/#{service_name}.conf" do
+      source "unicorn-upstart.conf.erb"
       cookbook "unicorn"
       mode "0644"
       owner params[:owner] if params[:owner]
@@ -65,10 +66,16 @@ define :unicorn_config,
       mode params[:mode]   if params[:mode]
       variables params
     end
-    service 'unicorn' do
+    service service_name do
       provider Chef::Provider::Service::Upstart
-      supports :status => true, :restart => true, :reload => true
-      action   :nothing
+      supports(
+        :status => true,
+        :start => true,
+        :stop => true,
+        :restart => true,
+        :reload => true
+      )
+      action   :enable
     end
   else
     ruby_block "warn-no-init-style" do
