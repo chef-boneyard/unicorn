@@ -53,7 +53,7 @@ define :unicorn_config,
 
   case params[:init_style]
   when 'upstart'
-    template "/etc/init/unicorn-#{basename}.conf" do
+    template "/etc/init/#{service_name}.conf" do
       source "unicorn-upstart.conf.erb"
       cookbook "unicorn"
       mode "0644"
