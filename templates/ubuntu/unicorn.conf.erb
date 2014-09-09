@@ -1,0 +1,6 @@
+# Upstart Unicorn Conf
+script
+    cd <%= working_directory %>
+    bundle exec unicorn -c <%= @name %> -E <%= @rack_env %>
+    flock -x 0 < <%= @pid %>.lock
+end script

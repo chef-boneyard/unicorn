@@ -38,13 +38,18 @@ end
 
 <%- end %>
 
-<%- if @before_fork %>
 # What to do before we fork a worker
 before_fork do |server, worker|
-  <%= @before_fork %>
+  # Attempt to open and hold a file open, locked in read only mode. This file
+  # will remain locked so long as the master or children are running which
+  # allows upstart to detect when the process exits.
+  f = File.open("#{server.config[:pid]}.lock", 'w')
+  exit unless f.flock(File::LOCK_SH)
+
+  <%= @before_fork || "" %>
 end
 
-<%- end %>
+
 <%- if @after_fork %>
 # What to do after we fork a worker
 after_fork do |server, worker|

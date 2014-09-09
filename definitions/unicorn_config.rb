@@ -18,35 +18,56 @@
 # limitations under the License.
 #
 
-define :unicorn_config, 
-    :listen               => nil, 
+define :unicorn_config,
+    :listen               => nil,
     :working_directory    => nil,
-    :worker_timeout       => 60, 
-    :preload_app          => false, 
+    :worker_timeout       => 60,
+    :preload_app          => false,
     :worker_processes     => 4,
-    :unicorn_command_line => nil, 
-    :forked_user          => nil, 
-    :forked_group         => nil, 
+    :unicorn_command_line => nil,
+    :forked_user          => nil,
+    :forked_group         => nil,
     :pid                  => nil,
     :before_exec          => nil,
-    :before_fork          => nil, 
-    :after_fork           => nil, 
+    :before_fork          => nil,
+    :after_fork           => nil,
     :stderr_path          => nil,
-    :stdout_path          => nil, 
-    :notifies             => nil, 
-    :owner                => nil, 
+    :stdout_path          => nil,
+    :notifies             => nil,
+    :owner                => nil,
     :group                => nil,
-    :mode                 => nil, 
-    :copy_on_write        => false, 
-    :enable_stats         => false do
+    :mode                 => nil,
+    :copy_on_write        => false,
+    :enable_stats         => false,
+    :init_style           => nil,
+    :rack_env             => 'production' do
 
   config_dir = File.dirname(params[:name])
+  basename = File.basename(params[:name])
 
   directory config_dir do
     recursive true
     action :create
   end
-  
+
+  case params['init_style'] do
+  when 'upstart'
+    template "/etc/init/#{basename}.conf" do
+      source "ubuntu/unicorn.conf.erb"
+      cookbook "unicorn"
+      mode "0644"
+      owner params[:owner] if params[:owner]
+      group params[:group] if params[:group]
+      mode params[:mode]   if params[:mode]
+      variables params
+    end
+    service 'unicorn' do
+      provider Chef::Provider::Service::Upstart
+      supports :status => true, :restart => true, :reload => true
+      action   :nothing
+    end
+  end
+
   template params[:name] do
     source "unicorn.rb.erb"
     cookbook "unicorn"
@@ -57,7 +78,7 @@ define :unicorn_config,
     variables params
     notifies *params[:notifies] if params[:notifies]
   end
-  
+
   # If the user set a group for forked processes but not a user, warn them that
   # we did not set the group. Unicorn does not allow you to drop privileges at
   # the group level only.
