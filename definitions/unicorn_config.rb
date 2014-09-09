@@ -45,9 +45,13 @@ define :unicorn_config,
   config_dir = File.dirname(params[:name])
   basename = File.basename(params[:name])
 
-  directory config_dir do
-    recursive true
-    action :create
+  paths = [:stderr_path, :stdout_path].map {|k| File.dirname(params[k])}
+  paths += [config_dir]
+  paths.each do |path|
+    directory path do
+      recursive true
+      action :create
+    end
   end
 
   case params[:init_style]
