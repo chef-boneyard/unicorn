@@ -43,7 +43,8 @@ define :unicorn_config,
     :rack_env             => 'production' do
 
   config_dir = File.dirname(params[:name])
-  basename = File.basename(params[:name])
+  basename = File.basename(params[:name], ".*")
+  service_name = basename == "unicorn" ? "unicorn" : "unicorn-#{basename}"
 
   directory config_dir do
     recursive true
@@ -61,7 +62,7 @@ define :unicorn_config,
       mode params[:mode]   if params[:mode]
       variables params
     end
-    service "unicorn-#{basename}" do
+    service service_name do
       provider Chef::Provider::Service::Upstart
       supports :status => true, :restart => true, :reload => true
       action   :nothing
