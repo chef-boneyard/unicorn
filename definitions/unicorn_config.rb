@@ -53,7 +53,7 @@ define :unicorn_config,
   case params[:init_style]
   when 'upstart'
     template "/etc/init/#{basename}.conf" do
-      source "ubuntu/unicorn.conf.erb"
+      source "unicorn-upstart.conf.erb"
       cookbook "unicorn"
       mode "0644"
       owner params[:owner] if params[:owner]
