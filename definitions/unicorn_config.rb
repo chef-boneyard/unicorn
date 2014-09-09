@@ -50,7 +50,7 @@ define :unicorn_config,
     action :create
   end
 
-  case params['init_style'] do
+  case params['init_style']
   when 'upstart'
     template "/etc/init/#{basename}.conf" do
       source "ubuntu/unicorn.conf.erb"
