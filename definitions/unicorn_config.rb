@@ -52,6 +52,12 @@ define :unicorn_config,
     directory path do
       recursive true
       action :create
+      # stderr and stout should be in a unicorn-writeable directory
+      if path != config_dir
+        owner params[:owner]
+        group params[:group]
+        mode "0744"
+      end
     end
   end
 
