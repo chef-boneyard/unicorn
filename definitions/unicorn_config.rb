@@ -64,8 +64,14 @@ define :unicorn_config,
     end
     service service_name do
       provider Chef::Provider::Service::Upstart
-      supports :status => true, :restart => true, :reload => true
-      action   :nothing
+      supports(
+        :status => true,
+        :start => true,
+        :stop => true,
+        :restart => true,
+        :reload => true
+      )
+      action   :enable
     end
   else
     ruby_block "warn-no-init-style" do
