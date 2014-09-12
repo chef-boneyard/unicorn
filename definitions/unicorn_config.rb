@@ -67,9 +67,8 @@ define :unicorn_config,
       source "unicorn-upstart.conf.erb"
       cookbook "unicorn"
       mode "0644"
-      owner params[:owner] if params[:owner]
-      group params[:group] if params[:group]
-      mode params[:mode]   if params[:mode]
+      owner "root"
+      group "root"
       variables params
     end
     service service_name do
