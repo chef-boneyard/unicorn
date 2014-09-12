@@ -15,7 +15,7 @@ script
   # If a pidfile exists and a process is running with that pid
   if [ -e <%= @pid %> ]; then
     if [ $(kill -0 $(cat <%= @pid %>); $? ) -eq 1 ]; then
-      $oldPid = $(cat /var/run/unicorn.pid);
+      $oldPid = $(cat <%= @pid %>);
       # Send a USR2 to it to reload the application in a new unicorn process
       kill -USR2 $oldPid;
       # If kill_old_pid_before_fork is true then the new unicorn instance will
