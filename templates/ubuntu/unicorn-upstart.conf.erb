@@ -10,12 +10,10 @@ respawn
 script
   cd <%= @working_directory %>;
 
-  $oldPid = $(cat <%= @pid %>);
-
   # If a pidfile exists and a process is running with that pid
   if [ -e <%= @pid %> ]; then
-    if [ $(kill -0 $(cat <%= @pid %>); $? ) -eq 1 ]; then
-      $oldPid = $(cat <%= @pid %>);
+    oldPid=`cat <%= @pid %>`;
+    if kill -0 $oldPid  > /dev/null 2>&1; $?; then
       # Send a USR2 to it to reload the application in a new unicorn process
       kill -USR2 $oldPid;
       # If kill_old_pid_before_fork is true then the new unicorn instance will
@@ -31,7 +29,7 @@ script
 
   # Wait for the write lock held by the unicorn master. If a write lock is
   # acheived by this upstart script it means the unicorn master has exited.
-  $? && flock -x 0 < <%= @pid %>.lock
+  flock -x 0 < <%= @pid %>.lock
 end script
 
 post-stop script
