@@ -1,5 +1,5 @@
 # Upstart Unicorn Conf
-<% unicorn = "bundle exec unicorn -c #{@name} -E #{@rack_env}"%>
+<% unicorn = "bundle exec unicorn -c #{@name} -D -E #{@rack_env}"%>
 <% unicorn = "su #{@forked_user} -c \"#{unicorn}\"" if @forked_user %>
 
 start on (filesystem and net-device-up IFACE=lo)
@@ -9,6 +9,28 @@ respawn
 
 script
     cd <%= @working_directory %>
-    <%= unicorn %>
-    flock -x 0 < <%= @pid %>.lock
+
+    $oldPid = $(cat <%= @pid %>)
+
+    # If a pidfile exists and a process is running with that pid
+    if [ -e <%= @pid %> ] && kill -0 $oldPid &>/dev/null then
+      # Send a USR2 to it to reload the application in a new unicorn process
+      kill -USR2 $oldPid
+      # If kill_old_pid_before_fork is true then the new unicorn instance will
+      # wait until it is loaded and then send a sig QUIT to the old one causing
+      # it to finish processing it's current requests and exit gracefully.
+
+    # If unicorn isn't already running start it
+    else
+      <%= unicorn %>
+    fi
+
+    # Wait for the write lock held by the unicorn master. If a write lock is
+    # acheived by this upstart script it means the unicorn master has exited.
+    $? && flock -x 0 < <%= @pid %>.lock
+end script
+
+pre-stop script
+  # Don't send TERM and KILL!
+  start
 end script
