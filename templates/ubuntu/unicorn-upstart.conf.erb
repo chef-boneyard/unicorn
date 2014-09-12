@@ -8,29 +8,34 @@ stop on runlevel [!2345]
 respawn
 
 script
-  cd <%= @working_directory %>
+  cd <%= @working_directory %>;
 
-  $oldPid = $(cat <%= @pid %>)
+  $oldPid = $(cat <%= @pid %>);
 
   # If a pidfile exists and a process is running with that pid
-  if [ -e <%= @pid %> ] && kill -0 $oldPid &>/dev/null then
-    # Send a USR2 to it to reload the application in a new unicorn process
-    kill -USR2 $oldPid
-    # If kill_old_pid_before_fork is true then the new unicorn instance will
-    # wait until it is loaded and then send a sig QUIT to the old one causing
-    # it to finish processing it's current requests and exit gracefully.
-
+  if [ -e <%= @pid %> ]; then
+    if [ $(kill -0 $(cat <%= @pid %>); $? ) -eq 1 ]; then
+      $oldPid = $(cat /var/run/unicorn.pid);
+      # Send a USR2 to it to reload the application in a new unicorn process
+      kill -USR2 $oldPid;
+      # If kill_old_pid_before_fork is true then the new unicorn instance will
+      # wait until it is loaded and then send a sig QUIT to the old one causing
+      # it to finish processing it's current requests and exit gracefully.
+    else
+      <%= unicorn %>;
+    fi;
   # If unicorn isn't already running start it
   else
-    <%= unicorn %>
-  fi
+    <%= unicorn %>;
+  fi;
 
   # Wait for the write lock held by the unicorn master. If a write lock is
   # acheived by this upstart script it means the unicorn master has exited.
   $? && flock -x 0 < <%= @pid %>.lock
 end script
 
-pre-stop script
-  # Don't send TERM and KILL!
-  start
+post-stop script
+  # KILL the unicorns on stop
+  [ -e <%= @pid %> ] && kill -QUIT $(cat <%= @pid %>)
 end script
+
