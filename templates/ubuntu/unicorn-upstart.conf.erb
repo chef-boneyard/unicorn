@@ -1,6 +1,5 @@
 # Upstart Unicorn Conf
 <% unicorn = "bundle exec unicorn -c #{@name} -D -E #{@rack_env}"%>
-<% unicorn = "su #{@forked_user} -c \"#{unicorn}\"" if @forked_user %>
 
 start on (filesystem and net-device-up IFACE=lo)
 stop on runlevel [!2345]
