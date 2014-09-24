@@ -26,6 +26,11 @@ script
     <%= unicorn %>;
   fi;
 
+  # Give unicorn 10 seconds to initialize and establish it's write lock.
+  # This prevents initctl start from spinning up 2 unicorn masters and
+  # also rate limits unicorn master restarts.
+  sleep 10
+
   # Wait for the write lock held by the unicorn master. If a write lock is
   # acheived by this upstart script it means the unicorn master has exited.
   flock -x 0 < <%= @pid %>.lock
