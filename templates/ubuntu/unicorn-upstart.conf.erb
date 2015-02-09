@@ -6,7 +6,8 @@ stop on runlevel [!2345]
 # Send a USR2 to it to reload the application in a new unicorn process
 reload signal USR2
 
-respawn
+respawn limit unlimited
+
 
 script
   # Trap any USR2 (reload) signals sent to this script (a bash process in its
