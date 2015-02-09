@@ -36,6 +36,7 @@ script
   # Wait for the write lock held by the unicorn master. If a write lock is
   # acheived by this upstart script it means the unicorn master has exited.
   flock -x 0 < <%= @pid %>.lock
+  
   # After the unicorn master has exited clean up the pidfile in case it
   # exited uncleanly.
   rm <%= @pid %>
