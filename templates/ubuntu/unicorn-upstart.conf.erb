@@ -1,32 +1,25 @@
 # Upstart Unicorn Conf
-<% unicorn = "bundle exec unicorn -c #{@name} -D -E #{@rack_env}"%>
 
 start on (filesystem and net-device-up IFACE=lo)
 stop on runlevel [!2345]
 
+# Send a USR2 to it to reload the application in a new unicorn process
+reload signal USR2
+
 respawn
 
 script
+  # Trap any USR2 (reload) signals sent to this script (a bash process in its
+  # own right), and pass them on to Unicorn.
+  trap 'kill -USR2 $(cat "<%= @pid %>")' USR2
+
   cd <%= @working_directory %>;
 
-  if [ -e <%= @pid %> ]; then
-    oldPid=`cat <%= @pid %>`;
-    # If a pidfile exists and a process is running with that pid
-    if kill -0 $oldPid  > /dev/null 2>&1; $?; then
-      # Send a USR2 to it to reload the application in a new unicorn process
-      kill -USR2 $oldPid;
-      # If kill_old_pid_before_fork is true then the new unicorn instance will
-      # wait until it is loaded and then send a sig QUIT to the old one causing
-      # it to finish processing it's current requests and exit gracefully.
-    else
-      # If the pidfile exists but a process is not running with that pid start a
-      # new instance
-      <%= unicorn %>;
-    fi;
-  # If unicorn isn't already running start it
-  else
-    <%= unicorn %>;
-  fi;
+  # Kill any previous unicorn instances
+  [ -e <%= @pid %> ] && kill -QUIT $(cat <%= @pid %>) || true;
+
+  # Start unicorn
+  bundle exec unicorn -c <%= @name %> -D -E <%= @rack_env %>;
 
   # Give unicorn 10 seconds to initialize and establish it's write lock.
   # This prevents initctl start from spinning up 2 unicorn masters and
@@ -36,13 +29,11 @@ script
   # Wait for the write lock held by the unicorn master. If a write lock is
   # acheived by this upstart script it means the unicorn master has exited.
   flock -x 0 < <%= @pid %>.lock
-  # After the unicorn master has exited clean up the pidfile in case it
-  # exited uncleanly.
-  rm <%= @pid %>
+
 end script
 
 post-stop script
   # KILL the unicorns on stop
-  [ -e <%= @pid %> ] && kill -QUIT $(cat <%= @pid %>)
+  [ -e <%= @pid %> ] && kill -QUIT $(cat <%= @pid %>) || true;
 end script
 

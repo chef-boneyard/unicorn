@@ -41,6 +41,12 @@ end
 # What to do before we fork a worker
 before_fork do |server, worker|
 
+  # Attempt to open and hold a file open, locked in read only mode. This file
+  # will remain locked so long as the master or children are running which
+  # allows upstart to detect when the process exits.
+  f = File.open("#{server.config[:pid]}.lock", 'w')
+  exit unless f.flock(File::LOCK_SH)
+
   <%- if @kill_old_pid_before_fork %>
   ##
   # When sent a USR2, Unicorn will suffix its pidfile with .oldbin and
@@ -61,12 +67,6 @@ before_fork do |server, worker|
     end
   end
   <%- end %>
-
-  # Attempt to open and hold a file open, locked in read only mode. This file
-  # will remain locked so long as the master or children are running which
-  # allows upstart to detect when the process exits.
-  f = File.open("#{server.config[:pid]}.lock", 'w')
-  exit unless f.flock(File::LOCK_SH)
 
   <%= @before_fork || "" %>
 end
