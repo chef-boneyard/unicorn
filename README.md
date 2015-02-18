@@ -58,7 +58,7 @@ Respectively.
 
 ### Examples:
 
-Setting some custom attributes in a recipe (this is from Opscode's
+Setting some custom attributes in a recipe (this is from Chef's
 `application::unicorn`.
 
     node.default[:unicorn][:worker_timeout] = 60
@@ -81,9 +81,9 @@ Setting some custom attributes in a recipe (this is from Opscode's
 License and Author
 ==================
 
-- Author: Adam Jacob <adam@opscode.com>
+- Author: Adam Jacob <adam@chef.io>
 
-- Copyright 2009-2013, Opscode, Inc.
+- Copyright 2009-2013, Chef Software, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
