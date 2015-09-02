@@ -1,3 +1,7 @@
+unicorn Cookbook CHANGELOG
+=======================
+This file is used to list changes made in each version of the unicorn cookbook.
+
 ## v2.0.0:
 
 - #9 Removes transform to allow for using node attributes for params.
