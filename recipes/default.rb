@@ -18,4 +18,6 @@
 # limitations under the License.
 #
 
+include_recipe 'build-essential'
+
 gem_package 'unicorn'
