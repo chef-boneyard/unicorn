@@ -18,4 +18,4 @@
 # limitations under the License.
 #
 
-gem_package "unicorn"
+gem_package 'unicorn'

@@ -39,7 +39,6 @@ define :unicorn_config,
     :mode                 => nil,
     :copy_on_write        => false,
     :enable_stats         => false do
-
   config_dir = File.dirname(params[:name])
 
   directory config_dir do
@@ -48,9 +47,9 @@ define :unicorn_config,
   end
 
   template params[:name] do
-    source "unicorn.rb.erb"
-    cookbook "unicorn"
-    mode "0644"
+    source 'unicorn.rb.erb'
+    cookbook 'unicorn'
+    mode '0644'
     owner params[:owner] if params[:owner]
     group params[:group] if params[:group]
     mode params[:mode]   if params[:mode]
@@ -61,12 +60,12 @@ define :unicorn_config,
   # If the user set a group for forked processes but not a user, warn them that
   # we did not set the group. Unicorn does not allow you to drop privileges at
   # the group level only.
-  ruby_block "warn-group-no-user" do
-    only_if { params[:forked_user].nil? and !params[:forked_group].nil? }
+  ruby_block 'warn-group-no-user' do
+    only_if { params[:forked_user].nil? && !params[:forked_group].nil? }
     block do
       Chef::Log.warn "Unable to set the Unicorn 'forked_group' because a "\
         "forked_user' was not specified! Unicorn will be run as root! Please "\
-        "see the Unicorn documentation regarding `user` for proper usage."
+        'see the Unicorn documentation regarding `user` for proper usage.'
     end
   end
 end
