@@ -2,6 +2,17 @@ unicorn Cookbook CHANGELOG
 =======================
 This file is used to list changes made in each version of the unicorn cookbook.
 
+## v2.1.0:
+
+- Include build-essential in the default recipe to that the necessary build tools will be in place to compile native gem deps for the unicorn gem
+- Add testing with Kitchen CI config, basic convergence Chefspec, Travis CI config
+- Add rubocop config and resolve warnings
+- Add a gitignore, chefignore, Berksfile, and Gemfile to the repo
+- Add source_url and issues_url to the metadata
+- Better define chef / platform requirements in the readme and add common platforms to the metadata file
+- Add testing and cookbook version badges to the readme
+- Update all Opscode references to Chef Software
+
 ## v2.0.0:
 
 - #9 Removes transform to allow for using node attributes for params.
