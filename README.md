@@ -3,6 +3,7 @@ unicorn Cookbook
 
 [![Build Status](https://travis-ci.org/opscode-cookbooks/unicorn.svg?branch=master)](https://travis-ci.org/opscode-cookbooks/unicorn)
 [![Cookbook Version](https://img.shields.io/cookbook/v/unicorn.svg)](https://supermarket.chef.io/cookbooks/unicorn)
+
 Installs and configures unicorn, and provides a definition to manage
 configuration file for Rack apps running under unicorn.
 
