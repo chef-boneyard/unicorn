@@ -9,8 +9,14 @@ configuration file for Rack apps running under unicorn.
 
 Requirements
 ============
+### Platforms
+- Any platform the supports the unicorn gem
 
-Should work anywhere.
+### Chef
+Chef 11+
+
+### Cookbooks
+- none
 
 Definitions
 ===========
