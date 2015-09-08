@@ -13,7 +13,7 @@ Requirements
 - Any platform the supports the unicorn gem
 
 ### Chef
-Chef 11+
+- Chef 11+
 
 ### Cookbooks
 - none
