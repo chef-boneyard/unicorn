@@ -11,5 +11,5 @@ end
 depends 'build-essential'
 recipe 'unicorn::default', 'Installs unicorn rubygem'
 
-source_url 'https://github.com/opscode-cookbooks/unicorn' if respond_to?(:source_url)
-issues_url 'https://github.com/opscode-cookbooks/unicorn/issues' if respond_to?(:source_url)
+source_url 'https://github.com/chef-cookbooks/unicorn' if respond_to?(:source_url)
+issues_url 'https://github.com/chef-cookbooks/unicorn/issues' if respond_to?(:source_url)
