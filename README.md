@@ -8,26 +8,25 @@ Installs and configures unicorn, and provides a definition to manage
 configuration file for Rack apps running under unicorn.
 
 Requirements
-============
-### Platforms
+------------
+#### Platforms
 - Any platform the supports the unicorn gem
 
-### Chef
+#### Chef
 - Chef 11+
 
-### Cookbooks
+#### Cookbooks
 - none
 
 Definitions
-===========
+-----------
 
-unicorn\_config
----------------
+### unicorn\_config
 
 The unicorn\_config definition manages the configuration template for
 an application running under unicorn.
 
-### Parameters:
+#### Parameters:
 
 * `listen` - Default is nil.
 * `working_directory` - Default is nil.
@@ -65,7 +64,7 @@ For more information on `copy_on_write` and `enable_stats`, see:
 
 Respectively.
 
-### Examples:
+#### Examples:
 
 Setting some custom attributes in a recipe (this is from Chef's
 `application::unicorn`.
@@ -87,14 +86,14 @@ Setting some custom attributes in a recipe (this is from Chef's
       before_fork node[:unicorn][:before_fork]
     end
 
-License and Author
-==================
+License & Authors
+-----------------
 
-- Author: Adam Jacob <adam@chef.io>
+**Author:** Cookbook Engineering Team (<cookbooks@chef.io>)
 
-```text
-Copyright 2009-2015, Chef Software, Inc.
+**Copyright:** 2008-2015, Chef Software, Inc.
 
+```
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
