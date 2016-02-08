@@ -3,6 +3,9 @@
 
 Installs and configures unicorn, and provides a definition to manage configuration file for Rack apps running under unicorn.
 
+# DEPRECATION NOTICE
+This cookbook was originally coded prior to the adoption of bundler and rbenv/rvm. We don't believe that there's a need for installing unicorn into the system ruby in a modern ruby stack. We've chosen to deprecate the cookbook to prevent user confusion. We're open to rethinking this cookbook entirely and if that interests you drop us a line at cookbooks@chef.io
+
 ## Requirements
 ### Platforms
 - Any platform the supports the unicorn gem

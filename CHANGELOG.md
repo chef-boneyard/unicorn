@@ -1,6 +1,11 @@
 # unicorn Cookbook CHANGELOG
 This file is used to list changes made in each version of the unicorn cookbook.
 
+## v2.1.2 (02-08-2016)
+- Marked this cookbook as deprecated. See the readme for additional information
+- Added integration testing in Travis CI with kitchen-docker
+- Updated platforms that are tested in the .kitchen.yml file
+
 ## v2.1.1 (12-14-2015):
 - Added a Rakefile for simplified testing
 - Added the standard chef .rubocop.yml file and a rubocop_todo.yml file
