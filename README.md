@@ -13,9 +13,9 @@ This cookbook was originally coded prior to the adoption of bundler and rbenv/rv
 
 - Any platform the supports the unicorn gem
 
-### Chef
+### Chef Infra Client 
 
-- Chef 14+
+- Chef Infra Client 14+
 
 ### Cookbooks
 

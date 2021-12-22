@@ -1,7 +1,18 @@
 # unicorn Cookbook CHANGELOG
 This file is used to list changes made in each version of the unicorn cookbook.
 
+## v3.0.0 (12-21-2021)
+
+- Require Chef Infra Client 14
+- Remove the dependency on build-essential cookbook
+- Remove Rake based testing / maintainer file use
+- Use a SPDX license in metadata.rb
+- Remove legacy Infra Client gating in metadata.rb
+- Remove legacy recipe descriptions in metadata.rb
+- Update the .rubocop.yml config for the latest cookstyle release
+
 ## v2.1.2 (02-08-2016)
+
 - Marked this cookbook as deprecated. See the readme for additional information
 - Added integration testing in Travis CI with kitchen-docker
 - Updated platforms that are tested in the .kitchen.yml file
